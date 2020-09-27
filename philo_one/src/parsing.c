@@ -6,7 +6,7 @@
 /*   By: vgoldman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 12:37:56 by vgoldman          #+#    #+#             */
-/*   Updated: 2020/09/26 17:23:24 by vgoldman         ###   ########.fr       */
+/*   Updated: 2020/09/27 17:31:57 by vgoldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,16 @@ static void	check_args(void)
 
 void		parse_args(int argc, char **argv)
 {
-	if (argc < 4 || argc > 5)
+	if (argc < 5 || argc > 6)
 		err("Wrong number of arguments.");
 	g_philosophers.number_of_philosophers = ft_atoi(argv[1]);
 	g_philosophers.time_to_die = ft_atoi(argv[2]);
 	g_philosophers.time_to_eat = ft_atoi(argv[3]) * 1000;
-	if (argc == 5)
+	g_philosophers.time_to_sleep = ft_atoi(argv[4]) * 1000;
+	if (argc == 6)
 	{
 		g_philosophers.number_of_time_each_philosopher_must_eat =
-			ft_atoi(argv[4]) * 1000;
+			ft_atoi(argv[5]) * 1000;
 		g_philosophers.limit = 1;
 	}
 	else

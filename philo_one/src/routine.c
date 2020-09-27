@@ -6,7 +6,7 @@
 /*   By: vgoldman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 14:50:19 by vgoldman          #+#    #+#             */
-/*   Updated: 2020/09/26 18:25:30 by vgoldman         ###   ########.fr       */
+/*   Updated: 2020/09/27 17:10:06 by vgoldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,11 @@ void	take_forks(t_philo *philo)
 
 void	eat(t_philo *philo)
 {
-	//pthread_mutex_lock(&philo->mutex);
+	pthread_mutex_lock(&philo->mutex);
 	msg(philo, EAT);
 	usleep(g_philosophers.time_to_eat);
-	//pthread_mutex_unlock(&philo->mutex);
+	philo->last_eat = get_timestamp();
+	pthread_mutex_unlock(&philo->mutex);
 }
 
 void	put_down_forks(t_philo *philo)

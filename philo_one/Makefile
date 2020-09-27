@@ -41,7 +41,7 @@ all: $(NAME)
 $(NAME): ${OBJ}
 	@${CC} ${OBJ} ${CFLAGS} -o ${NAME}
 	@echo "${GREEN_BOLD}\r${NAME} by Violetta Goldman is done ${TICK}          ${RESET}"
-	@echo "${LIGHT_BLUE}To run the ${NAME} type './${NAME} [number_of_philosophers] [time_to_die] [time_to_eat] (optional)[number_of_time_each_philosopher_must_eat]'${RESET}"
+	@echo "${LIGHT_BLUE}To run the ${NAME} type './${NAME} [number_of_philosophers] [time_to_die] [time_to_eat] [time_to_sleep] (optional)[number_of_time_each_philosopher_must_eat]'${RESET}"
 
 ./obj/%.o: ./src/%.c
 	@mkdir -p ./obj

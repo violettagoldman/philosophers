@@ -6,7 +6,7 @@
 /*   By: vgoldman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 14:29:23 by vgoldman          #+#    #+#             */
-/*   Updated: 2020/09/26 18:18:28 by vgoldman         ###   ########.fr       */
+/*   Updated: 2020/09/27 17:06:19 by vgoldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	init_philo(t_philo *philo, int id)
 {
 	philo->iter = 0;
 	philo->id = id;
-	philo->last_eat = 0;
+	philo->last_eat = get_timestamp();
 }
 
 void		init_philosophers(void)
