@@ -6,7 +6,7 @@
 /*   By: vgoldman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 14:29:23 by vgoldman          #+#    #+#             */
-/*   Updated: 2020/10/10 17:25:04 by vgoldman         ###   ########.fr       */
+/*   Updated: 2020/10/10 17:29:11 by vgoldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,21 +23,14 @@ static void	init_philo(t_philo *philo, int id)
 
 static void	init_helper(void)
 {
+	int i;
+
 	if (!(g_philosophers.philos = (t_philo *)malloc(
 					sizeof(t_philo) * g_philosophers.number_of_philosophers)))
 		err("Malloc error");
 	sem_unlink("/MSG");
 	if (!(g_philosophers.msg = sem_open("/MSG", O_CREAT | O_EXCL, S_IRWXU, 1)))
 		err("Semaphore failed");
-}
-
-void		init_philosophers(void)
-{
-	int i;
-
-	g_philosophers.stop = 0;
-	g_philosophers.start = get_time();
-	init_helper();
 	i = -1;
 	while (++i < g_philosophers.number_of_philosophers)
 	{
@@ -48,6 +41,15 @@ void		init_philosophers(void)
 			g_philosophers.philos[i].id_str, O_CREAT | O_EXCL, S_IRWXU, 1)))
 			err("Semaphore failed");
 	}
+}
+
+void		init_philosophers(void)
+{
+	int i;
+
+	g_philosophers.stop = 0;
+	g_philosophers.start = get_time();
+	init_helper();
 	sem_unlink("/FORKS");
 	if (!(g_philosophers.forks = sem_open("/FORKS", O_CREAT | O_EXCL, S_IRWXU,
 		g_philosophers.number_of_philosophers)))
