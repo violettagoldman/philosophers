@@ -6,7 +6,7 @@
 /*   By: vgoldman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 12:13:23 by vgoldman          #+#    #+#             */
-/*   Updated: 2020/09/26 18:34:32 by vgoldman         ###   ########.fr       */
+/*   Updated: 2020/10/10 14:17:25 by vgoldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,17 @@ typedef struct			s_philosophers
 	t_philo		*philos;
 	t_mutex		*forks;
 	t_mutex		msg;
-	t_mutex		die;
 }						t_philosophers;
 
-enum states {FORK, EAT, SLEEP, THINK, DIE};
+enum					e_states
+{
+	FORK,
+	EAT,
+	SLEEP,
+	THINK,
+	DIE,
+	OVER
+};
 
 void					parse_args(int argc, char **argv);
 void					err(const char *msg);
@@ -63,5 +70,7 @@ int						ft_strlen(char *str);
 uint64_t				get_time(void);
 int						get_timestamp(void);
 void					free_philosophers(void);
+void					ft_sleep(int ms);
+void					run_monitor_helper(void);
 
 #endif

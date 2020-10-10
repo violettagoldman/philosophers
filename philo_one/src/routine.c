@@ -6,7 +6,7 @@
 /*   By: vgoldman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 14:50:19 by vgoldman          #+#    #+#             */
-/*   Updated: 2020/09/27 17:10:06 by vgoldman         ###   ########.fr       */
+/*   Updated: 2020/10/10 14:21:25 by vgoldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	take_forks(t_philo *philo)
 	if (g_philosophers.stop)
 	{
 		pthread_mutex_unlock(&g_philosophers.forks[philo->id]);
-		return;
+		return ;
 	}
 	pthread_mutex_lock(&g_philosophers.forks[(philo->id + 1) %
 			g_philosophers.number_of_philosophers]);
@@ -30,7 +30,7 @@ void	take_forks(t_philo *philo)
 		pthread_mutex_unlock(&g_philosophers.forks[philo->id]);
 		pthread_mutex_unlock(&g_philosophers.forks[(philo->id + 1) %
 				g_philosophers.number_of_philosophers]);
-		return;
+		return ;
 	}
 	msg(philo, FORK);
 }
@@ -39,8 +39,9 @@ void	eat(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->mutex);
 	msg(philo, EAT);
-	usleep(g_philosophers.time_to_eat);
 	philo->last_eat = get_timestamp();
+	usleep(g_philosophers.time_to_eat * 1000);
+	++philo->iter;
 	pthread_mutex_unlock(&philo->mutex);
 }
 
@@ -54,6 +55,6 @@ void	put_down_forks(t_philo *philo)
 void	sleep_and_think(t_philo *philo)
 {
 	msg(philo, SLEEP);
-	usleep(g_philosophers.time_to_sleep);
+	usleep(g_philosophers.time_to_sleep * 1000);
 	msg(philo, THINK);
 }

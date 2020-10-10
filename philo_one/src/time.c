@@ -6,7 +6,7 @@
 /*   By: vgoldman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 17:00:16 by vgoldman          #+#    #+#             */
-/*   Updated: 2020/09/26 17:13:30 by vgoldman         ###   ########.fr       */
+/*   Updated: 2020/09/29 22:40:45 by vgoldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,4 +25,13 @@ uint64_t	get_time(void)
 
 	gettimeofday(&tv, NULL);
 	return ((tv.tv_sec * (uint64_t)1000) + (tv.tv_usec / 1000));
+}
+
+void		ft_sleep(int ms)
+{
+	uint64_t now;
+
+	now = get_time();
+	while (get_time() - now < (uint64_t)ms)
+		usleep(500);
 }

@@ -6,7 +6,7 @@
 /*   By: vgoldman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 12:22:02 by vgoldman          #+#    #+#             */
-/*   Updated: 2020/09/27 17:19:52 by vgoldman         ###   ########.fr       */
+/*   Updated: 2020/10/10 14:23:48 by vgoldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,41 @@
 
 t_philosophers g_philosophers;
 
+int			check_meal(void)
+{
+	int i;
+
+	i = -1;
+	while (++i < g_philosophers.number_of_philosophers)
+	{
+		if (g_philosophers.philos[i].iter <
+		g_philosophers.number_of_time_each_philosopher_must_eat)
+			return (0);
+	}
+	return (1);
+}
+
 void		*run_monitor(void *arg)
 {
-	t_philo *philo;
+	t_philo	*philo;
 
 	philo = (t_philo *)arg;
 	while (!g_philosophers.stop)
 	{
-		//pthread_mutex_lock(&g_philosophers.die);
 		pthread_mutex_lock(&philo->mutex);
+		if (g_philosophers.limit && check_meal())
+		{
+			msg(philo, OVER);
+			run_monitor_helper();
+		}
 		if (!g_philosophers.stop &&
 				get_timestamp() - philo->last_eat > g_philosophers.time_to_die)
 		{
 			msg(philo, DIE);
-			g_philosophers.stop = 1;
-			int i = -1;
-			while (++i < g_philosophers.number_of_philosophers)
-				pthread_mutex_unlock(&g_philosophers.forks[i]);
-			//pthread_mutex_unlock(&g_philosophers.forks[(philo->id + 1) % g_philosophers.number_of_philosophers]);
+			run_monitor_helper();
 		}
-		//pthread_mutex_unlock(&g_philosophers.die);
 		pthread_mutex_unlock(&philo->mutex);
-		usleep(100);
+		usleep(2000);
 	}
 	return (NULL);
 }
@@ -48,7 +61,7 @@ void		*run_philo(void *arg)
 	philo = (t_philo*)arg;
 	pthread_create(&monitor, NULL, &run_monitor, philo);
 	pthread_detach(monitor);
-	usleep(philo->id * 100);
+	usleep(philo->id * 140);
 	while (!g_philosophers.stop)
 	{
 		if (!g_philosophers.stop)

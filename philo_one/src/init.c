@@ -6,7 +6,7 @@
 /*   By: vgoldman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 14:29:23 by vgoldman          #+#    #+#             */
-/*   Updated: 2020/09/27 17:06:19 by vgoldman         ###   ########.fr       */
+/*   Updated: 2020/10/10 13:43:22 by vgoldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,8 @@ static void	init_philo(t_philo *philo, int id)
 	philo->last_eat = get_timestamp();
 }
 
-void		init_philosophers(void)
+static void	init_helper(void)
 {
-	int i;
-
-	g_philosophers.stop = 0;
-	g_philosophers.start = get_time();
 	if (!(g_philosophers.forks = (t_mutex *)malloc(
 					sizeof(t_mutex) * g_philosophers.number_of_philosophers)))
 		err("Malloc error");
@@ -35,8 +31,15 @@ void		init_philosophers(void)
 		err("Malloc error");
 	if (pthread_mutex_init(&(g_philosophers.msg), NULL))
 		err("Mutex failed");
-	if (pthread_mutex_init(&(g_philosophers.die), NULL))
-		err("Mutex failed");
+}
+
+void		init_philosophers(void)
+{
+	int i;
+
+	g_philosophers.stop = 0;
+	g_philosophers.start = get_time();
+	init_helper();
 	i = -1;
 	while (++i < g_philosophers.number_of_philosophers)
 	{
