@@ -6,7 +6,7 @@
 /*   By: vgoldman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 14:29:23 by vgoldman          #+#    #+#             */
-/*   Updated: 2020/10/10 15:31:35 by vgoldman         ###   ########.fr       */
+/*   Updated: 2020/10/10 17:25:04 by vgoldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,11 @@ static void	init_philo(t_philo *philo, int id)
 
 static void	init_helper(void)
 {
-	if (!(g_philosophers.forks = (t_mutex *)malloc(
-					sizeof(t_mutex) * g_philosophers.number_of_philosophers)))
-		err("Malloc error");
 	if (!(g_philosophers.philos = (t_philo *)malloc(
 					sizeof(t_philo) * g_philosophers.number_of_philosophers)))
 		err("Malloc error");
-	if (!(g_philosophers.msg = sem_open("MSG", O_CREAT, 0644, 1)))
+	sem_unlink("/MSG");
+	if (!(g_philosophers.msg = sem_open("/MSG", O_CREAT | O_EXCL, S_IRWXU, 1)))
 		err("Semaphore failed");
 }
 
@@ -43,14 +41,17 @@ void		init_philosophers(void)
 	i = -1;
 	while (++i < g_philosophers.number_of_philosophers)
 	{
-		g_philosophers.philos[i].id_str = ft_itoa(i);
+		g_philosophers.philos[i].id_str = prefix(ft_itoa(i));
 		init_philo(&g_philosophers.philos[i], i);
-		if (pthread_mutex_init(&(g_philosophers.forks[i]), NULL))
-			err("Mutex failed");
+		sem_unlink(g_philosophers.philos[i].id_str);
 		if (!(g_philosophers.philos[i].mutex = sem_open(
-			g_philosophers.philos[i].id_str, O_CREAT, 0644, 1)))
+			g_philosophers.philos[i].id_str, O_CREAT | O_EXCL, S_IRWXU, 1)))
 			err("Semaphore failed");
 	}
+	sem_unlink("/FORKS");
+	if (!(g_philosophers.forks = sem_open("/FORKS", O_CREAT | O_EXCL, S_IRWXU,
+		g_philosophers.number_of_philosophers)))
+		err("Semaphore failed");
 	i = -1;
 	while (++i < g_philosophers.number_of_philosophers)
 		pthread_create(&(g_philosophers.philos[i].thread), NULL, &run_philo,
@@ -58,9 +59,7 @@ void		init_philosophers(void)
 	i = -1;
 	while (++i < g_philosophers.number_of_philosophers)
 		pthread_join(g_philosophers.philos[i].thread, NULL);
-	i = -1;
-	while (++i < g_philosophers.number_of_philosophers)
-		pthread_mutex_destroy(&g_philosophers.forks[i]);
+	sem_close(g_philosophers.forks);
 }
 
 void		free_philosophers(void)
@@ -70,11 +69,13 @@ void		free_philosophers(void)
 	i = -1;
 	while (++i < g_philosophers.number_of_philosophers)
 	{
-		free(g_philosophers.philos[i].id_str);
-		pthread_mutex_destroy(&g_philosophers.forks[i]);
 		sem_close(g_philosophers.philos[i].mutex);
+		sem_unlink(g_philosophers.philos[i].id_str);
+		free(g_philosophers.philos[i].id_str);
 	}
+	sem_close(g_philosophers.forks);
+	sem_unlink("/FORKS");
 	sem_close(g_philosophers.msg);
+	sem_unlink("/MSG");
 	free(g_philosophers.philos);
-	free(g_philosophers.forks);
 }

@@ -6,7 +6,7 @@
 /*   By: vgoldman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 14:50:19 by vgoldman          #+#    #+#             */
-/*   Updated: 2020/10/10 15:19:56 by vgoldman         ###   ########.fr       */
+/*   Updated: 2020/10/10 16:41:24 by vgoldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,18 @@ extern t_philosophers g_philosophers;
 
 void	take_forks(t_philo *philo)
 {
-	pthread_mutex_lock(&g_philosophers.forks[philo->id]);
+	sem_wait(g_philosophers.forks);
 	msg(philo, FORK);
 	if (g_philosophers.stop)
 	{
-		pthread_mutex_unlock(&g_philosophers.forks[philo->id]);
+		sem_post(g_philosophers.forks);
 		return ;
 	}
-	pthread_mutex_lock(&g_philosophers.forks[(philo->id + 1) %
-			g_philosophers.number_of_philosophers]);
+	sem_wait(g_philosophers.forks);
 	if (g_philosophers.stop)
 	{
-		pthread_mutex_unlock(&g_philosophers.forks[philo->id]);
-		pthread_mutex_unlock(&g_philosophers.forks[(philo->id + 1) %
-				g_philosophers.number_of_philosophers]);
+		sem_post(g_philosophers.forks);
+		sem_post(g_philosophers.forks);
 		return ;
 	}
 	msg(philo, FORK);
@@ -45,11 +43,10 @@ void	eat(t_philo *philo)
 	sem_post(philo->mutex);
 }
 
-void	put_down_forks(t_philo *philo)
+void	put_down_forks(void)
 {
-	pthread_mutex_unlock(&g_philosophers.forks[philo->id]);
-	pthread_mutex_unlock(&g_philosophers.forks[(philo->id + 1) %
-			g_philosophers.number_of_philosophers]);
+	sem_post(g_philosophers.forks);
+	sem_post(g_philosophers.forks);
 }
 
 void	sleep_and_think(t_philo *philo)

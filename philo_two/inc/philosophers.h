@@ -6,7 +6,7 @@
 /*   By: vgoldman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 12:13:23 by vgoldman          #+#    #+#             */
-/*   Updated: 2020/10/10 15:28:56 by vgoldman         ###   ########.fr       */
+/*   Updated: 2020/10/10 17:03:35 by vgoldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ typedef struct			s_philosophers
 	int			stop;
 	uint64_t	start;
 	t_philo		*philos;
-	t_mutex		*forks;
+	sem_t		*forks;
 	sem_t		*msg;
 }						t_philosophers;
 
@@ -65,7 +65,7 @@ void					init_philosophers(void);
 void					*run_philo(void *arg);
 void					take_forks(t_philo *philo);
 void					eat(t_philo *philo);
-void					put_down_forks(t_philo *philo);
+void					put_down_forks(void);
 void					sleep_and_think(t_philo *philo);
 void					msg(t_philo *philo, int type);
 int						ft_strlen(char *str);
@@ -74,5 +74,6 @@ int						get_timestamp(void);
 void					free_philosophers(void);
 void					ft_sleep(int ms);
 void					run_monitor_helper(void);
+char					*prefix(char *id);
 
 #endif

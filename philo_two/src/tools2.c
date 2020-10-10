@@ -1,25 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   helper.c                                           :+:      :+:    :+:   */
+/*   tools2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vgoldman <vgoldman@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/10 13:43:52 by vgoldman          #+#    #+#             */
-/*   Updated: 2020/10/10 16:01:40 by vgoldman         ###   ########.fr       */
+/*   Created: 2020/10/10 16:56:16 by vgoldman          #+#    #+#             */
+/*   Updated: 2020/10/10 17:02:50 by vgoldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-extern t_philosophers g_philosophers;
-
-void	run_monitor_helper(void)
+char	*prefix(char *id)
 {
-	int		i;
+	char	*result;
+	int		len;
 
-	g_philosophers.stop = 1;
-	i = -1;
-	while (++i < g_philosophers.number_of_philosophers)
-		sem_post(g_philosophers.forks);
+	len = ft_strlen(id);
+	if (!(result = (char *)malloc((len + 2) * sizeof(char))))
+		err("Malloc error");
+	result[0] = '/';
+	len = -1;
+	while (id[++len])
+		result[len + 1] = id[len];
+	result[len + 1] = '\0';
+	free(id);
+	return (result);
 }

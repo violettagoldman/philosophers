@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_one.c                                        :+:      :+:    :+:   */
+/*   philo_two.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vgoldman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 12:22:02 by vgoldman          #+#    #+#             */
-/*   Updated: 2020/10/10 15:18:18 by vgoldman         ###   ########.fr       */
+/*   Updated: 2020/10/10 16:03:32 by vgoldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void		*run_philo(void *arg)
 		if (!g_philosophers.stop)
 			eat(philo);
 		if (!g_philosophers.stop)
-			put_down_forks(philo);
+			put_down_forks();
 		if (!g_philosophers.stop)
 			sleep_and_think(philo);
 	}
