@@ -61,7 +61,7 @@ void		*run_philo(void *arg)
 	philo = (t_philo*)arg;
 	pthread_create(&monitor, NULL, &run_monitor, philo);
 	pthread_detach(monitor);
-	usleep(philo->id * 140);
+	usleep(philo->id * 1000);
 	while (!g_philosophers.stop)
 	{
 		if (!g_philosophers.stop)

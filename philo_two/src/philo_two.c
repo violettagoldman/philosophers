@@ -48,7 +48,7 @@ void		*run_monitor(void *arg)
 			run_monitor_helper();
 		}
 		sem_post(philo->mutex);
-		usleep(2000);
+		usleep(600);
 	}
 	return (NULL);
 }
@@ -61,7 +61,7 @@ void		*run_philo(void *arg)
 	philo = (t_philo*)arg;
 	pthread_create(&monitor, NULL, &run_monitor, philo);
 	pthread_detach(monitor);
-	usleep(philo->id * 140);
+	usleep(philo->id * 500);
 	while (!g_philosophers.stop)
 	{
 		if (!g_philosophers.stop)

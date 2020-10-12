@@ -18,6 +18,7 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <sys/time.h>
+# include <stdint.h>
 
 typedef pthread_mutex_t	t_mutex;
 

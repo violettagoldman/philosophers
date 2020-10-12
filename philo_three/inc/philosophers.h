@@ -19,6 +19,10 @@
 # include <stdio.h>
 # include <semaphore.h>
 # include <sys/time.h>
+# include <sys/wait.h>
+# include <fcntl.h>
+# include <pthread.h>
+# include <stdint.h>
 
 typedef pthread_mutex_t	t_mutex;
 
