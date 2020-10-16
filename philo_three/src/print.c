@@ -6,7 +6,7 @@
 /*   By: vgoldman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 15:15:52 by vgoldman          #+#    #+#             */
-/*   Updated: 2020/10/10 16:13:34 by vgoldman         ###   ########.fr       */
+/*   Updated: 2020/10/15 19:46:54 by vgoldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,13 @@
 
 extern t_philosophers g_philosophers;
 
-static void	print(int type)
+static void	print(t_philo *philo, int type)
 {
+	char *nb;
+
+	nb = ft_itoa(philo->id + 1);
+	write(1, nb, ft_strlen(nb));
+	free(nb);
 	if (type == FORK)
 		write(1, " has taken a fork 🍴", 22);
 	else if (type == EAT)
@@ -44,6 +49,7 @@ void		msg(t_philo *philo, int type)
 	}
 	nb = ft_itoa(get_timestamp());
 	write(1, nb, ft_strlen(nb));
+	free(nb);
 	write(1, " ", 1);
 	if (type == OVER)
 	{
@@ -52,8 +58,6 @@ void		msg(t_philo *philo, int type)
 		sem_post(g_philosophers.msg);
 		return ;
 	}
-	nb = ft_itoa(philo->id + 1);
-	write(1, nb, ft_strlen(nb));
-	print(type);
+	print(philo, type);
 	sem_post(g_philosophers.msg);
 }

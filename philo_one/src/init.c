@@ -6,7 +6,7 @@
 /*   By: vgoldman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 14:29:23 by vgoldman          #+#    #+#             */
-/*   Updated: 2020/10/10 15:08:42 by vgoldman         ###   ########.fr       */
+/*   Updated: 2020/10/16 10:38:05 by vgoldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,4 @@ void		free_philosophers(void)
 		pthread_mutex_destroy(&g_philosophers.philos[i].mutex);
 	}
 	pthread_mutex_destroy(&g_philosophers.msg);
-	free(g_philosophers.philos);
-	free(g_philosophers.forks);
 }

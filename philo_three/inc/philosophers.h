@@ -6,7 +6,7 @@
 /*   By: vgoldman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 12:13:23 by vgoldman          #+#    #+#             */
-/*   Updated: 2020/10/11 07:06:06 by vgoldman         ###   ########.fr       */
+/*   Updated: 2020/10/15 19:26:50 by vgoldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,18 @@
 # include <fcntl.h>
 # include <pthread.h>
 # include <stdint.h>
+
+# ifdef __APPLE__
+#  define DELAY_MONITOR 1500
+#  define DELAY_START 500
+#  define DELAY_SLEEP 500
+# endif
+
+# ifdef __linux__
+#  define DELAY_MONITOR 1500
+#  define DELAY_START 500
+#  define DELAY_SLEEP 500
+# endif
 
 typedef pthread_mutex_t	t_mutex;
 

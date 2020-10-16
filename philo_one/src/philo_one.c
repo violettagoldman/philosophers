@@ -6,7 +6,7 @@
 /*   By: vgoldman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 12:22:02 by vgoldman          #+#    #+#             */
-/*   Updated: 2020/10/10 14:23:48 by vgoldman         ###   ########.fr       */
+/*   Updated: 2020/10/15 18:39:14 by vgoldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void		*run_monitor(void *arg)
 			run_monitor_helper();
 		}
 		pthread_mutex_unlock(&philo->mutex);
-		usleep(2000);
+		usleep(DELAY_MONITOR);
 	}
 	return (NULL);
 }
@@ -61,7 +61,7 @@ void		*run_philo(void *arg)
 	philo = (t_philo*)arg;
 	pthread_create(&monitor, NULL, &run_monitor, philo);
 	pthread_detach(monitor);
-	usleep(philo->id * 1000);
+	usleep(philo->id * DELAY_START);
 	while (!g_philosophers.stop)
 	{
 		if (!g_philosophers.stop)

@@ -21,7 +21,7 @@ define update
 endef
 
 ifeq ($(D), 1)
-		CFLAGS += -fsanitize=thread
+		CFLAGS += -fsanitize=address
 endif
 OS = $(shell uname -s)
 ifeq ($(OS), Linux)

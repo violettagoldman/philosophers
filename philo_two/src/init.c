@@ -6,7 +6,7 @@
 /*   By: vgoldman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 14:29:23 by vgoldman          #+#    #+#             */
-/*   Updated: 2020/10/10 17:29:11 by vgoldman         ###   ########.fr       */
+/*   Updated: 2020/10/16 09:53:45 by vgoldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,9 @@ void		free_philosophers(void)
 	{
 		sem_close(g_philosophers.philos[i].mutex);
 		sem_unlink(g_philosophers.philos[i].id_str);
-		free(g_philosophers.philos[i].id_str);
 	}
 	sem_close(g_philosophers.forks);
 	sem_unlink("/FORKS");
 	sem_close(g_philosophers.msg);
 	sem_unlink("/MSG");
-	free(g_philosophers.philos);
 }
