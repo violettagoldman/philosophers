@@ -6,7 +6,7 @@
 /*   By: vgoldman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 14:50:19 by vgoldman          #+#    #+#             */
-/*   Updated: 2020/11/07 18:50:24 by vgoldman         ###   ########.fr       */
+/*   Updated: 2020/11/07 19:13:51 by vgoldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void	eat(t_philo *philo)
 	philo->last_eat = get_timestamp();
 	usleep(g_philosophers.time_to_eat * 1000);
 	++philo->iter;
-	printf("%d %d\n", philo->id, philo->iter);
 	sem_post(philo->mutex);
 }
 

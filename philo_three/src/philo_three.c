@@ -6,7 +6,7 @@
 /*   By: vgoldman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 12:22:02 by vgoldman          #+#    #+#             */
-/*   Updated: 2020/11/07 19:02:10 by vgoldman         ###   ########.fr       */
+/*   Updated: 2020/11/07 19:13:21 by vgoldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ void		*run_monitor(void *arg)
 			g_philosophers.time_to_die && philo->iter <
 				g_philosophers.number_of_time_each_philosopher_must_eat)
 		{
-			printf("\nRM: %d %d %d\n", philo->id, philo->iter, g_philosophers.number_of_time_each_philosopher_must_eat);
 			msg(philo, DIE);
 			run_monitor_helper();
 		}
