@@ -6,7 +6,7 @@
 /*   By: vgoldman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 14:29:23 by vgoldman          #+#    #+#             */
-/*   Updated: 2020/10/15 19:33:14 by vgoldman         ###   ########.fr       */
+/*   Updated: 2020/11/05 19:10:55 by vgoldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,7 @@ void		init_philosophers(void)
 		g_philosophers.number_of_philosophers)))
 		err("Semaphore failed");
 	i = -1;
-	while (++i < g_philosophers.number_of_philosophers)
-		pthread_create(&(g_philosophers.philos[i].thread), NULL, &run_philo,
-				&(g_philosophers.philos[i]));
-	i = -1;
-	while (++i < g_philosophers.number_of_philosophers)
-		pthread_join(g_philosophers.philos[i].thread, NULL);
+	run_threads();
 	sem_close(g_philosophers.forks);
 }
 
@@ -81,4 +76,23 @@ void		free_philosophers(void)
 	sem_close(g_philosophers.msg);
 	sem_unlink("/MSG");
 	free(g_philosophers.philos);
+}
+
+void		*run_meal_counter(void *arg)
+{
+	t_philo	*philo;
+
+	philo = (t_philo *)arg;
+	while (!g_philosophers.stop)
+	{
+		sem_wait(philo->mutex);
+		if (g_philosophers.limit && check_meal())
+		{
+			msg(philo, OVER);
+			run_monitor_helper();
+		}
+		sem_post(philo->mutex);
+		usleep(DELAY_MONITOR);
+	}
+	return (NULL);
 }

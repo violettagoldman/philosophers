@@ -6,7 +6,7 @@
 /*   By: vgoldman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 12:13:23 by vgoldman          #+#    #+#             */
-/*   Updated: 2020/10/15 19:26:50 by vgoldman         ###   ########.fr       */
+/*   Updated: 2020/11/05 18:55:32 by vgoldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <semaphore.h>
+# include <signal.h>
 # include <sys/time.h>
 # include <sys/wait.h>
 # include <fcntl.h>
@@ -26,7 +27,7 @@
 
 # ifdef __APPLE__
 #  define DELAY_MONITOR 1500
-#  define DELAY_START 500
+#  define DELAY_START 0
 #  define DELAY_SLEEP 500
 # endif
 
@@ -92,5 +93,8 @@ void					free_philosophers(void);
 void					ft_sleep(int ms);
 void					run_monitor_helper(void);
 char					*prefix(char *id);
+void					run_threads(void);
+void					*run_meal_counter(void *arg);
+int						check_meal(void);
 
 #endif

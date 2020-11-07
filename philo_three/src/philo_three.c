@@ -6,7 +6,7 @@
 /*   By: vgoldman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 12:22:02 by vgoldman          #+#    #+#             */
-/*   Updated: 2020/10/15 18:42:32 by vgoldman         ###   ########.fr       */
+/*   Updated: 2020/11/07 19:02:10 by vgoldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,9 @@ int			check_meal(void)
 
 	i = -1;
 	while (++i < g_philosophers.number_of_philosophers)
-	{
 		if (g_philosophers.philos[i].iter <
 		g_philosophers.number_of_time_each_philosopher_must_eat)
 			return (0);
-	}
 	return (1);
 }
 
@@ -33,7 +31,8 @@ void		*run_monitor(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	while (!g_philosophers.stop)
+	while (!g_philosophers.stop &&
+		philo->iter < g_philosophers.number_of_time_each_philosopher_must_eat)
 	{
 		sem_wait(philo->mutex);
 		if (g_philosophers.limit && check_meal())
@@ -41,9 +40,11 @@ void		*run_monitor(void *arg)
 			msg(philo, OVER);
 			run_monitor_helper();
 		}
-		if (!g_philosophers.stop &&
-				get_timestamp() - philo->last_eat > g_philosophers.time_to_die)
+		if (!g_philosophers.stop && get_timestamp() - philo->last_eat >
+			g_philosophers.time_to_die && philo->iter <
+				g_philosophers.number_of_time_each_philosopher_must_eat)
 		{
+			printf("\nRM: %d %d %d\n", philo->id, philo->iter, g_philosophers.number_of_time_each_philosopher_must_eat);
 			msg(philo, DIE);
 			run_monitor_helper();
 		}
@@ -62,7 +63,8 @@ void		*run_philo(void *arg)
 	pthread_create(&monitor, NULL, &run_monitor, philo);
 	pthread_detach(monitor);
 	usleep(philo->id * DELAY_START);
-	while (!g_philosophers.stop)
+	while (!g_philosophers.stop &&
+		philo->iter < g_philosophers.number_of_time_each_philosopher_must_eat)
 	{
 		if (!g_philosophers.stop)
 			take_forks(philo);
@@ -76,17 +78,20 @@ void		*run_philo(void *arg)
 	return (NULL);
 }
 
-static void	run_threads(void)
+void		run_threads(void)
 {
-	int i;
-	int pid;
+	int			i;
+	int			pid;
 
 	i = -1;
 	while (++i < g_philosophers.number_of_philosophers)
 	{
 		pid = fork();
 		if (pid == 0)
+		{
 			run_philo(&g_philosophers.philos[i]);
+			exit(0);
+		}
 		else
 			g_philosophers.philos[i].pid = pid;
 	}
@@ -99,7 +104,6 @@ int			main(int argc, char **argv)
 {
 	parse_args(argc, argv);
 	init_philosophers();
-	run_threads();
 	free_philosophers();
 	return (0);
 }
