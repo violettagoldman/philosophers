@@ -6,7 +6,7 @@
 /*   By: vgoldman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 12:22:02 by vgoldman          #+#    #+#             */
-/*   Updated: 2020/11/07 19:13:21 by vgoldman         ###   ########.fr       */
+/*   Updated: 2020/11/07 19:24:51 by vgoldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ void		*run_monitor(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	while (!g_philosophers.stop &&
-		philo->iter < g_philosophers.number_of_time_each_philosopher_must_eat)
+	while (!g_philosophers.stop && (!g_philosophers.limit ||
+		philo->iter < g_philosophers.number_of_time_each_philosopher_must_eat))
 	{
 		sem_wait(philo->mutex);
 		if (g_philosophers.limit && check_meal())
@@ -41,8 +41,8 @@ void		*run_monitor(void *arg)
 			run_monitor_helper();
 		}
 		if (!g_philosophers.stop && get_timestamp() - philo->last_eat >
-			g_philosophers.time_to_die && philo->iter <
-				g_philosophers.number_of_time_each_philosopher_must_eat)
+			g_philosophers.time_to_die && (!g_philosophers.limit || philo->iter
+			< g_philosophers.number_of_time_each_philosopher_must_eat))
 		{
 			msg(philo, DIE);
 			run_monitor_helper();
@@ -62,8 +62,8 @@ void		*run_philo(void *arg)
 	pthread_create(&monitor, NULL, &run_monitor, philo);
 	pthread_detach(monitor);
 	usleep(philo->id * DELAY_START);
-	while (!g_philosophers.stop &&
-		philo->iter < g_philosophers.number_of_time_each_philosopher_must_eat)
+	while (!g_philosophers.stop && (!g_philosophers.limit ||
+		philo->iter < g_philosophers.number_of_time_each_philosopher_must_eat))
 	{
 		if (!g_philosophers.stop)
 			take_forks(philo);
