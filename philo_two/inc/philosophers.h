@@ -6,7 +6,7 @@
 /*   By: vgoldman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 12:13:23 by vgoldman          #+#    #+#             */
-/*   Updated: 2020/10/15 18:37:55 by vgoldman         ###   ########.fr       */
+/*   Updated: 2020/11/14 17:20:36 by vgoldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@
 
 # ifdef __linux__
 #  define DELAY_MONITOR 1500
-#  define DELAY_START 500
-#  define DELAY_SLEEP 500
+#  define DELAY_START 700
+#  define DELAY_SLEEP 0
 # endif
 
 typedef pthread_mutex_t	t_mutex;

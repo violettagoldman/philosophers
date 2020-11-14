@@ -6,7 +6,7 @@
 /*   By: vgoldman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 14:50:19 by vgoldman          #+#    #+#             */
-/*   Updated: 2020/10/10 14:21:25 by vgoldman         ###   ########.fr       */
+/*   Updated: 2020/11/14 17:07:56 by vgoldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	eat(t_philo *philo)
 	pthread_mutex_lock(&philo->mutex);
 	msg(philo, EAT);
 	philo->last_eat = get_timestamp();
-	usleep(g_philosophers.time_to_eat * 1000);
+	ft_sleep(g_philosophers.time_to_eat);
 	++philo->iter;
 	pthread_mutex_unlock(&philo->mutex);
 }
@@ -55,6 +55,6 @@ void	put_down_forks(t_philo *philo)
 void	sleep_and_think(t_philo *philo)
 {
 	msg(philo, SLEEP);
-	usleep(g_philosophers.time_to_sleep * 1000);
+	ft_sleep(g_philosophers.time_to_sleep);
 	msg(philo, THINK);
 }
