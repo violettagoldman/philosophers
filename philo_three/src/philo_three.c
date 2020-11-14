@@ -6,7 +6,7 @@
 /*   By: vgoldman <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/26 12:22:02 by vgoldman          #+#    #+#             */
-/*   Updated: 2020/11/07 19:24:51 by vgoldman         ###   ########.fr       */
+/*   Updated: 2020/11/14 16:50:13 by vgoldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,6 @@ void		*run_monitor(void *arg)
 		philo->iter < g_philosophers.number_of_time_each_philosopher_must_eat))
 	{
 		sem_wait(philo->mutex);
-		if (g_philosophers.limit && check_meal())
-		{
-			msg(philo, OVER);
-			run_monitor_helper();
-		}
 		if (!g_philosophers.stop && get_timestamp() - philo->last_eat >
 			g_philosophers.time_to_die && (!g_philosophers.limit || philo->iter
 			< g_philosophers.number_of_time_each_philosopher_must_eat))
@@ -48,7 +43,7 @@ void		*run_monitor(void *arg)
 			run_monitor_helper();
 		}
 		sem_post(philo->mutex);
-		usleep(DELAY_MONITOR);
+		ft_sleep(DELAY_MONITOR);
 	}
 	return (NULL);
 }
